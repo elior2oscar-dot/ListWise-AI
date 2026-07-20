@@ -1,0 +1,54 @@
+// Production schema (PostgreSQL). Used when deploying instead of prisma/schema.prisma (SQLite),
+// which stays as the zero-setup default for local development.
+// Kept in sync manually with prisma/schema.prisma - see scripts/prepare-db.mjs.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Session {
+  id            String    @id
+  shop          String
+  state         String
+  isOnline      Boolean   @default(false)
+  scope         String?
+  expires       DateTime?
+  accessToken   String
+  userId        BigInt?
+  firstName     String?
+  lastName      String?
+  email         String?
+  accountOwner  Boolean   @default(false)
+  locale        String?
+  collaborator  Boolean?  @default(false)
+  emailVerified Boolean?  @default(false)
+  refreshToken        String?
+  refreshTokenExpires DateTime?
+}
+
+model ShopSettings {
+  id              String   @id @default(cuid())
+  shop            String   @unique
+  brandVoice      String   @default("neutral")
+  plan            String?
+  generationsUsed Int      @default(0)
+  periodStart     DateTime @default(now())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model GenerationLog {
+  id           String   @id @default(cuid())
+  shop         String
+  productId    String
+  productTitle String
+  applied      Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  @@index([shop])
+}
