@@ -1,4 +1,4 @@
-import type { ActionFunctionArgs } from "react-router";
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import db from "../db.server";
 
 // Public, unauthenticated endpoint used by the marketing landing page (a
@@ -10,9 +10,19 @@ const CORS_HEADERS = {
   "Access-Control-Allow-Headers": "Content-Type",
 };
 
+// Browsers send a CORS preflight OPTIONS request before the real POST when
+// doing a cross-origin fetch with a JSON content type. React Router routes
+// OPTIONS to the loader (not the action), so we need to handle it here too.
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  if (request.method === "OPTIONS") {
+    return new Response(null, { status: 204, headers: CORS_HEADERS });
+  }
+  return new Response("Method not allowed", { status: 405, headers: CORS_HEADERS });
+};
+
 export const action = async ({ request }: ActionFunctionArgs) => {
   if (request.method === "OPTIONS") {
-    return new Response(null, { headers: CORS_HEADERS });
+    return new Response(null, { status: 204, headers: CORS_HEADERS });
   }
 
   try {
