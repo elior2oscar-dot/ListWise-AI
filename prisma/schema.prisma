@@ -56,3 +56,10 @@ model GenerationLog {
 
   @@index([shop])
 }
+
+// Pre-launch waitlist signups collected from the marketing landing page.
+model WaitlistEntry {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+}
