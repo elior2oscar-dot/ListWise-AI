@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ListWise AI — AI Product Descriptions & SEO for Shopify Stores</title>
+<meta name="description" content="ListWise AI writes SEO-optimized product titles, descriptions, and tags for your Shopify store in seconds. Sell more, write less.">
+<link rel="icon" type="image/png" href="/logo.png">
+<style>
+  :root{
+    --bg:#0b0d12;
+    --bg-alt:#12151d;
+    --card:#161a24;
+    --border:#242938;
+    --text:#eef1f6;
+    --muted:#9aa3b5;
+    --accent:#5b8cff;
+    --accent-2:#7c5bff;
+    --success:#3ddc97;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+  }
+  a{color:inherit;text-decoration:none;}
+  .container{max-width:1120px;margin:0 auto;padding:0 24px;}
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(11,13,18,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  nav{display:flex;align-items:center;justify-content:space-between;padding:18px 0;}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;}
+  .logo-badge{
+    width:32px;height:32px;border-radius:9px;
+    overflow:hidden;
+    display:flex;align-items:center;justify-content:center;font-size:16px;
+  }
+  .logo-badge img{width:100%;height:100%;object-fit:cover;}
+  nav .links{display:flex;gap:32px;align-items:center;}
+  nav .links a{color:var(--muted);font-size:15px;font-weight:500;transition:color .2s;}
+  nav .links a:hover{color:var(--text);}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    padding:11px 22px;border-radius:8px;font-weight:600;font-size:15px;
+    border:1px solid transparent;cursor:pointer;transition:transform .15s, box-shadow .15s;
+  }
+  .btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;box-shadow:0 8px 24px -8px rgba(91,140,255,.6);}
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 12px 28px -8px rgba(91,140,255,.75);}
+  .btn-ghost{border:1px solid var(--border);color:var(--text);}
+  .btn-ghost:hover{border-color:var(--accent);}
+  section{padding:96px 0;}
+  .hero{padding:120px 0 96px;text-align:center;position:relative;overflow:hidden;}
+  .hero::before{
+    content:"";position:absolute;top:-200px;left:50%;transform:translateX(-50%);
+    width:900px;height:500px;
+    background:radial-gradient(closest-side, rgba(91,140,255,.25), transparent);
+    pointer-events:none;
+  }
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--card);border:1px solid var(--border);
+    padding:6px 14px;border-radius:999px;font-size:13px;color:var(--muted);margin-bottom:24px;
+  }
+  .eyebrow span.dot{width:6px;height:6px;border-radius:50%;background:var(--success);}
+  h1{font-size:56px;font-weight:800;letter-spacing:-1.5px;max-width:800px;margin:0 auto 20px;line-height:1.1;}
+  h1 .grad{background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .subtitle{font-size:19px;color:var(--muted);max-width:600px;margin:0 auto 40px;}
+  .hero-ctas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:56px;}
+  .hero-note{font-size:13px;color:var(--muted);}
+  .mock{
+    max-width:900px;margin:0 auto;border-radius:16px;border:1px solid var(--border);
+    background:var(--card);box-shadow:0 40px 80px -40px rgba(0,0,0,.6);overflow:hidden;
+  }
+  .mock-bar{display:flex;gap:8px;padding:14px 18px;border-bottom:1px solid var(--border);background:var(--bg-alt);}
+  .mock-bar span{width:11px;height:11px;border-radius:50%;background:#2a2f3d;}
+  .mock-body{padding:32px;display:grid;grid-template-columns:1fr 1fr;gap:24px;text-align:left;}
+  .mock-col h4{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:10px;}
+  .mock-before{color:var(--muted);font-size:14px;padding:14px;border:1px dashed var(--border);border-radius:10px;}
+  .mock-after{color:var(--text);font-size:14px;padding:14px;border-radius:10px;background:linear-gradient(180deg, rgba(91,140,255,.08), rgba(124,91,255,.05));border:1px solid rgba(91,140,255,.35);}
+  .mock-after b{color:var(--success);}
+  .logos{padding:40px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+  .logos p{text-align:center;color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:20px;}
+  .logos-row{display:flex;justify-content:center;gap:48px;flex-wrap:wrap;color:var(--muted);font-weight:600;font-size:15px;opacity:.7;}
+  .section-head{text-align:center;max-width:640px;margin:0 auto 64px;}
+  .section-head .tag{color:var(--accent);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;display:block;}
+  .section-head h2{font-size:36px;font-weight:800;letter-spacing:-0.5px;margin-bottom:16px;}
+  .section-head p{color:var(--muted);font-size:16px;}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .feature{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px;transition:border-color .2s, transform .2s;}
+  .feature:hover{border-color:var(--accent);transform:translateY(-3px);}
+  .feature .icon{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,rgba(91,140,255,.2),rgba(124,91,255,.2));display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:18px;}
+  .feature h3{font-size:18px;font-weight:700;margin-bottom:8px;}
+  .feature p{color:var(--muted);font-size:14.5px;}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;}
+  .step{text-align:center;}
+  .step .num{
+    width:48px;height:48px;border-radius:50%;background:var(--card);border:1px solid var(--border);
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;margin:0 auto 18px;color:var(--accent);
+  }
+  .step h3{font-size:17px;font-weight:700;margin-bottom:8px;}
+  .step p{color:var(--muted);font-size:14.5px;max-width:260px;margin:0 auto;}
+  .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:stretch;}
+  .plan{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px;display:flex;flex-direction:column;}
+  .plan.featured{border-color:var(--accent);box-shadow:0 20px 60px -30px rgba(91,140,255,.5);position:relative;}
+  .plan.featured::before{content:"MOST POPULAR";position:absolute;top:-13px;right:24px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px;letter-spacing:.5px;}
+  .plan h3{font-size:18px;font-weight:700;margin-bottom:6px;}
+  .plan .price{font-size:40px;font-weight:800;margin:12px 0;}
+  .plan .price span{font-size:15px;color:var(--muted);font-weight:500;}
+  .plan ul{list-style:none;margin:24px 0;flex:1;}
+  .plan ul li{padding:8px 0;color:var(--muted);font-size:14.5px;display:flex;gap:10px;align-items:flex-start;}
+  .plan ul li::before{content:"✓";color:var(--success);font-weight:700;}
+  .faq{max-width:760px;margin:0 auto;}
+  .faq-item{border-bottom:1px solid var(--border);padding:22px 0;}
+  .faq-item h4{font-size:16px;font-weight:600;margin-bottom:8px;}
+  .faq-item p{color:var(--muted);font-size:14.5px;}
+  .cta-final{text-align:center;background:linear-gradient(135deg, rgba(91,140,255,.12), rgba(124,91,255,.08));border:1px solid var(--border);border-radius:20px;padding:72px 24px;}
+  .cta-final h2{font-size:32px;font-weight:800;margin-bottom:14px;}
+  .cta-final p{color:var(--muted);margin-bottom:32px;}
+  .waitlist-form{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;max-width:460px;margin:0 auto;}
+  .waitlist-form input[type="email"]{
+    flex:1;min-width:220px;padding:12px 16px;border-radius:8px;border:1px solid var(--border);
+    background:var(--bg-alt);color:var(--text);font-size:15px;outline:none;
+  }
+  .waitlist-form input[type="email"]:focus{border-color:var(--accent);}
+  .waitlist-note{font-size:13px;color:var(--muted);margin-top:14px;}
+  .waitlist-note.success{color:var(--success);}
+  .waitlist-note.error{color:#ff6b6b;}
+  footer{border-top:1px solid var(--border);padding:40px 0;}
+  footer .container{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+  footer p{color:var(--muted);font-size:13.5px;}
+  footer .flinks{display:flex;gap:24px;}
+  footer .flinks a{color:var(--muted);font-size:13.5px;}
+  footer .flinks a:hover{color:var(--text);}
+  @media (max-width:860px){
+    h1{font-size:38px;}
+    .grid-3,.pricing-grid,.steps{grid-template-columns:1fr;}
+    .mock-body{grid-template-columns:1fr;}
+    nav .links{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <nav>
+      <div class="logo"><div class="logo-badge"><img src="/logo.png" alt="ListWise AI logo"></div> ListWise AI</div>
+      <div class="links">
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <a class="btn btn-primary" href="#waitlist">Join the waitlist</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow"><span class="dot"></span> Coming soon to the Shopify App Store</div>
+    <h1>Write <span class="grad">SEO-perfect</span> product listings in one click</h1>
+    <p class="subtitle">ListWise AI turns messy product notes into polished, search-optimized titles, descriptions, and tags — for your entire catalog, in minutes instead of hours.</p>
+    <form class="waitlist-form" id="waitlist" data-waitlist-form>
+      <input type="email" name="email" placeholder="you@yourstore.com" required aria-label="Email address" />
+      <button type="submit" class="btn btn-primary">Join the waitlist</button>
+    </form>
+    <p class="waitlist-note" data-waitlist-note>We're finishing up Shopify App Store review. Join the waitlist and we'll email you the moment you can install ListWise AI — plus an early-bird discount.</p>
+
+    <div class="mock">
+      <div class="mock-bar"><span></span><span></span><span></span></div>
+      <div class="mock-body">
+        <div class="mock-col">
+          <h4>Before</h4>
+          <div class="mock-before">"handmade candle, soy wax, lavender scent, 8oz jar, good for gifts"</div>
+        </div>
+        <div class="mock-col">
+          <h4>After ListWise AI</h4>
+          <div class="mock-after"><b>Lavender Soy Candle — 8oz Hand-Poured Gift Jar</b><br>A calming lavender soy candle hand-poured in small batches. Clean-burning, long-lasting, and beautifully packaged — the perfect gift for birthdays, housewarmings, or self-care Sundays.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="logos">
+  <div class="container">
+    <p>Works with the tools you already use</p>
+    <div class="logos-row">
+      <span>Shopify Admin</span>
+      <span>Shopify POS</span>
+      <span>Online Store 2.0</span>
+      <span>Bulk Editor</span>
+    </div>
+  </div>
+</div>
+
+<section id="features">
+  <div class="container">
+    <div class="section-head">
+      <span class="tag">Features</span>
+      <h2>Everything you need to sell better, faster</h2>
+      <p>Stop staring at a blank description box. ListWise AI does the writing so you can focus on your products.</p>
+    </div>
+    <div class="grid-3">
+      <div class="feature">
+        <div class="icon">⚡</div>
+        <h3>Bulk generation</h3>
+        <p>Select dozens of products at once and generate titles, descriptions, and tags for your whole catalog in a single run.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">🔍</div>
+        <h3>SEO-first writing</h3>
+        <p>Every title and meta description is optimized for search intent so your products get found on Google and inside Shopify search.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">🎨</div>
+        <h3>Brand tone control</h3>
+        <p>Playful, luxury, minimal, or bold — set your brand voice once and every generated listing matches it.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">🛒</div>
+        <h3>One-click apply</h3>
+        <p>Review the AI draft side-by-side with your current listing, then push it straight to your Shopify catalog. No copy-pasting.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">🏷️</div>
+        <h3>Smart tags &amp; keywords</h3>
+        <p>Auto-generated tags improve on-site search and collection filtering, helping shoppers find what they want faster.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">📈</div>
+        <h3>Usage dashboard</h3>
+        <p>Track how many listings you've optimized this month and see your plan usage at a glance.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how" style="background:var(--bg-alt);">
+  <div class="container">
+    <div class="section-head">
+      <span class="tag">How it works</span>
+      <h2>From blank listing to published in 3 steps</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="num">1</div>
+        <h3>Connect your store</h3>
+        <p>Install ListWise AI from the Shopify App Store and securely connect your product catalog in seconds.</p>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <h3>Pick products &amp; generate</h3>
+        <p>Choose one product or your whole catalog. ListWise AI writes SEO-ready titles, descriptions, and tags instantly.</p>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <h3>Review &amp; publish</h3>
+        <p>Compare before/after, tweak if you like, and push the new listing live to your store with one click.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="container">
+    <div class="section-head">
+      <span class="tag">Pricing</span>
+      <h2>Simple pricing that grows with your store</h2>
+      <p>Start free. Upgrade only when you need more. Billed monthly through Shopify.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="plan">
+        <h3>Free Trial</h3>
+        <div class="price">$0<span>/14 days</span></div>
+        <ul>
+          <li>Up to 20 AI generations</li>
+          <li>Titles, descriptions &amp; tags</li>
+          <li>1 brand voice profile</li>
+          <li>No credit card required</li>
+        </ul>
+        <a class="btn btn-ghost" href="#waitlist" style="width:100%;">Join waitlist</a>
+      </div>
+      <div class="plan featured">
+        <h3>Starter</h3>
+        <div class="price">$9.99<span>/month</span></div>
+        <ul>
+          <li>Up to 200 AI generations / month</li>
+          <li>Titles, descriptions, tags &amp; meta</li>
+          <li>Bulk generation (up to 20 at once)</li>
+          <li>3 brand voice profiles</li>
+          <li>Email support</li>
+        </ul>
+        <a class="btn btn-primary" href="#waitlist" style="width:100%;">Join waitlist</a>
+      </div>
+      <div class="plan">
+        <h3>Growth</h3>
+        <div class="price">$29.99<span>/month</span></div>
+        <ul>
+          <li>Unlimited AI generations</li>
+          <li>Unlimited bulk apply</li>
+          <li>Unlimited brand voice profiles</li>
+          <li>Priority support</li>
+          <li>Early access to new features</li>
+        </ul>
+        <a class="btn btn-ghost" href="#waitlist" style="width:100%;">Join waitlist</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" style="background:var(--bg-alt);">
+  <div class="container">
+    <div class="section-head">
+      <span class="tag">FAQ</span>
+      <h2>Questions, answered</h2>
+    </div>
+    <div class="faq">
+      <div class="faq-item">
+        <h4>Does ListWise AI work with my Shopify theme?</h4>
+        <p>Yes. ListWise AI writes directly to your product title, description, tags, and SEO fields through the standard Shopify Admin API, so it works with any theme.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Will the AI overwrite my listings automatically?</h4>
+        <p>No. You always review a before/after comparison and choose to apply, edit, or discard each suggestion before anything changes in your store.</p>
+      </div>
+      <div class="faq-item">
+        <h4>What happens if I go over my monthly generation limit?</h4>
+        <p>You'll get a friendly notice in the app and can upgrade instantly to a higher plan — no listings are ever lost or blocked.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Can I cancel anytime?</h4>
+        <p>Yes. Billing is handled securely through Shopify, and you can cancel or change plans anytime from your Shopify admin.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="cta-final">
+      <h2>Ready to stop writing product descriptions by hand?</h2>
+      <p>Join the waitlist and be first to know when ListWise AI goes live on the Shopify App Store.</p>
+      <a class="btn btn-primary" href="#waitlist">Join the waitlist</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>© 2026 ListWise AI. Not affiliated with Shopify Inc.</p>
+    <div class="flinks">
+      <a href="mailto:aionaffiliate9@gmail.com">Contact</a>
+      <a href="#faq">FAQ</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="#">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var WAITLIST_ENDPOINT = "https://listwise-ai.onrender.com/api/waitlist";
+    var forms = document.querySelectorAll("[data-waitlist-form]");
+    forms.forEach(function (form) {
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var input = form.querySelector('input[type="email"]');
+        var note = document.querySelector("[data-waitlist-note]");
+        var button = form.querySelector("button");
+        var email = input.value.trim();
+        if (!email) return;
+
+        button.disabled = true;
+        var originalText = button.textContent;
+        button.textContent = "Joining…";
+
+        fetch(WAITLIST_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: email }),
+        })
+          .then(function (res) { return res.json().then(function (data) { return { ok: res.ok, data: data }; }); })
+          .then(function (result) {
+            if (result.ok) {
+              input.value = "";
+              if (note) {
+                note.textContent = "You're on the list! We'll email you as soon as ListWise AI is live.";
+                note.className = "waitlist-note success";
+              }
+            } else {
+              if (note) {
+                note.textContent = result.data.error || "Something went wrong. Please try again.";
+                note.className = "waitlist-note error";
+              }
+            }
+          })
+          .catch(function () {
+            if (note) {
+              note.textContent = "Something went wrong. Please try again in a moment.";
+              note.className = "waitlist-note error";
+            }
+          })
+          .finally(function () {
+            button.disabled = false;
+            button.textContent = originalText;
+          });
+      });
+    });
+  })();
+</script>
+</body>
+</html>
