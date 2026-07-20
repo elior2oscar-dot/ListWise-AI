@@ -121,6 +121,15 @@
   .cta-final{text-align:center;background:linear-gradient(135deg, rgba(91,140,255,.12), rgba(124,91,255,.08));border:1px solid var(--border);border-radius:20px;padding:72px 24px;}
   .cta-final h2{font-size:32px;font-weight:800;margin-bottom:14px;}
   .cta-final p{color:var(--muted);margin-bottom:32px;}
+  .waitlist-form{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;max-width:460px;margin:0 auto;}
+  .waitlist-form input[type="email"]{
+    flex:1;min-width:220px;padding:12px 16px;border-radius:8px;border:1px solid var(--border);
+    background:var(--bg-alt);color:var(--text);font-size:15px;outline:none;
+  }
+  .waitlist-form input[type="email"]:focus{border-color:var(--accent);}
+  .waitlist-note{font-size:13px;color:var(--muted);margin-top:14px;}
+  .waitlist-note.success{color:var(--success);}
+  .waitlist-note.error{color:#ff6b6b;}
   footer{border-top:1px solid var(--border);padding:40px 0;}
   footer .container{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
   footer p{color:var(--muted);font-size:13.5px;}
@@ -147,21 +156,21 @@
         <a href="#pricing">Pricing</a>
         <a href="#faq">FAQ</a>
       </div>
-      <a class="btn btn-primary" href="#pricing">Add to Shopify — Free trial</a>
+      <a class="btn btn-primary" href="#waitlist">Join the waitlist</a>
     </nav>
   </div>
 </header>
 
 <section class="hero">
   <div class="container">
-    <div class="eyebrow"><span class="dot"></span> Built for Shopify sellers</div>
+    <div class="eyebrow"><span class="dot"></span> Coming soon to the Shopify App Store</div>
     <h1>Write <span class="grad">SEO-perfect</span> product listings in one click</h1>
     <p class="subtitle">ListWise AI turns messy product notes into polished, search-optimized titles, descriptions, and tags — for your entire catalog, in minutes instead of hours.</p>
-    <div class="hero-ctas">
-      <a class="btn btn-primary" href="#pricing">Start free trial</a>
-      <a class="btn btn-ghost" href="#how">See how it works</a>
-    </div>
-    <p class="hero-note">No credit card required · 20 free AI generations · Installs in under 2 minutes</p>
+    <form class="waitlist-form" id="waitlist" data-waitlist-form>
+      <input type="email" name="email" placeholder="you@yourstore.com" required aria-label="Email address" />
+      <button type="submit" class="btn btn-primary">Join the waitlist</button>
+    </form>
+    <p class="waitlist-note" data-waitlist-note>We're finishing up Shopify App Store review. Join the waitlist and we'll email you the moment you can install ListWise AI — plus an early-bird discount.</p>
 
     <div class="mock">
       <div class="mock-bar"><span></span><span></span><span></span></div>
@@ -276,7 +285,7 @@
           <li>1 brand voice profile</li>
           <li>No credit card required</li>
         </ul>
-        <a class="btn btn-ghost" href="#" style="width:100%;">Start free</a>
+        <a class="btn btn-ghost" href="#waitlist" style="width:100%;">Join waitlist</a>
       </div>
       <div class="plan featured">
         <h3>Starter</h3>
@@ -288,7 +297,7 @@
           <li>3 brand voice profiles</li>
           <li>Email support</li>
         </ul>
-        <a class="btn btn-primary" href="#" style="width:100%;">Choose Starter</a>
+        <a class="btn btn-primary" href="#waitlist" style="width:100%;">Join waitlist</a>
       </div>
       <div class="plan">
         <h3>Growth</h3>
@@ -300,7 +309,7 @@
           <li>Priority support</li>
           <li>Early access to new features</li>
         </ul>
-        <a class="btn btn-ghost" href="#" style="width:100%;">Choose Growth</a>
+        <a class="btn btn-ghost" href="#waitlist" style="width:100%;">Join waitlist</a>
       </div>
     </div>
   </div>
@@ -337,8 +346,8 @@
   <div class="container">
     <div class="cta-final">
       <h2>Ready to stop writing product descriptions by hand?</h2>
-      <p>Join Shopify sellers using ListWise AI to launch products faster and rank higher in search.</p>
-      <a class="btn btn-primary" href="#pricing">Add ListWise AI to your store</a>
+      <p>Join the waitlist and be first to know when ListWise AI goes live on the Shopify App Store.</p>
+      <a class="btn btn-primary" href="#waitlist">Join the waitlist</a>
     </div>
   </div>
 </section>
@@ -355,5 +364,56 @@
   </div>
 </footer>
 
+<script>
+  (function () {
+    var WAITLIST_ENDPOINT = "https://listwise-ai.onrender.com/api/waitlist";
+    var forms = document.querySelectorAll("[data-waitlist-form]");
+    forms.forEach(function (form) {
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var input = form.querySelector('input[type="email"]');
+        var note = document.querySelector("[data-waitlist-note]");
+        var button = form.querySelector("button");
+        var email = input.value.trim();
+        if (!email) return;
+
+        button.disabled = true;
+        var originalText = button.textContent;
+        button.textContent = "Joining…";
+
+        fetch(WAITLIST_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: email }),
+        })
+          .then(function (res) { return res.json().then(function (data) { return { ok: res.ok, data: data }; }); })
+          .then(function (result) {
+            if (result.ok) {
+              input.value = "";
+              if (note) {
+                note.textContent = "You're on the list! We'll email you as soon as ListWise AI is live.";
+                note.className = "waitlist-note success";
+              }
+            } else {
+              if (note) {
+                note.textContent = result.data.error || "Something went wrong. Please try again.";
+                note.className = "waitlist-note error";
+              }
+            }
+          })
+          .catch(function () {
+            if (note) {
+              note.textContent = "Something went wrong. Please try again in a moment.";
+              note.className = "waitlist-note error";
+            }
+          })
+          .finally(function () {
+            button.disabled = false;
+            button.textContent = originalText;
+          });
+      });
+    });
+  })();
+</script>
 </body>
 </html>
