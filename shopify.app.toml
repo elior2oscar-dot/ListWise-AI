@@ -2,7 +2,7 @@
 
 client_id = "b39c7d26b9b5d71c98f3c65401f56bad"
 name = "ListWise AI"
-application_url = "https://example.com"
+application_url = "https://listwise-ai.onrender.com"
 embedded = true
 
 [access_scopes]
@@ -23,4 +23,4 @@ api_version = "2026-07"
   topics = [ "app/scopes_update" ]
 
 [auth]
-redirect_urls = [ ]
+redirect_urls = [ "https://listwise-ai.onrender.com/auth/callback", "https://listwise-ai.onrender.com/auth/shopify/callback", "https://listwise-ai.onrender.com/api/auth/callback" ]
