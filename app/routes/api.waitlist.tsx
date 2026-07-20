@@ -37,7 +37,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       status: 200,
       headers: { "Content-Type": "application/json", ...CORS_HEADERS },
     });
-  } catch {
+  } catch (error) {
+    console.error("[api.waitlist] error:", error);
     return new Response(JSON.stringify({ error: "Something went wrong. Please try again." }), {
       status: 500,
       headers: { "Content-Type": "application/json", ...CORS_HEADERS },
